@@ -20,6 +20,9 @@
                     "include": "#constant"
                 },
                 {
+                    "include": "#template"
+                },
+                {
                     "include": "#singlequotestring"
                 },
                 {
@@ -32,10 +35,13 @@
                     "include": "#function"
                 },
                 {
-                    "include": "#functioncall"
+                    "include": "#libfunctioncall"
                 },
                 {
-                    "include": "#if"
+                    "include": "#gamefunctioncall"
+                },
+                {
+                    "include": "#functioncall"
                 },
                 {
                     "include": "#ifblock"
@@ -182,11 +188,26 @@
             ]
         },
         "libfunctioncall": {
-            "name": "meta.functioncall.lua",
-            "match": "(?<![^.]\\.|:)\\b(assert|collectgarbage|dofile|error|getfenv|getmetatable|ipairs|loadfile|loadstring|module|next|pairs|pcall|print|rawequal|rawget|rawset|require|select|setfenv|setmetatable|tonumber|tostring|type|unpack|xpcall|coroutine\\.(create|resume|running|status|wrap|yield)|string\\.(byte|char|dump|find|format|gmatch|gsub|len|lower|match|rep|reverse|sub|upper)|table\\.(concat|insert|maxn|remove|sort)|math\\.(abs|acos|asin|atan2?|ceil|cosh?|deg|exp|floor|fmod|frexp|ldexp|log|log10|max|min|modf|pow|rad|random|randomseed|sinh?|sqrt|tanh?)|io\\.(close|flush|input|lines|open|output|popen|read|tmpfile|type|write)|os\\.(clock|date|difftime|execute|exit|getenv|remove|rename|setlocale|time|tmpname)|package\\.(cpath|loaded|loadlib|path|preload|seeall)|debug\\.(debug|[gs]etfenv|[gs]ethook|getinfo|[gs]etlocal|[gs]etmetatable|getregistry|[gs]etupvalue|traceback))\\b(?=[( {])",
+            "name": "meta.libfunctioncall.lua",
+            "begin": "(?<![^.]\\.|:)\\b(assert|collectgarbage|dofile|error|getfenv|getmetatable|ipairs|loadfile|loadstring|module|next|pairs|pcall|print|rawequal|rawget|rawset|require|select|setfenv|setmetatable|tonumber|tostring|type|unpack|xpcall|coroutine\\.(create|resume|running|status|wrap|yield)|string\\.(byte|char|dump|find|gfind|format|gmatch|gsub|len|lower|match|rep|reverse|sub|upper)|table\\.(concat|insert|maxn|remove|sort)|math\\.(abs|acos|asin|atan2?|ceil|cosh?|deg|exp|floor|fmod|frexp|ldexp|log|log10|max|min|modf|pow|rad|random|randomseed|sinh?|sqrt|tanh?)|io\\.(close|flush|input|lines|open|output|popen|read|tmpfile|type|write)|os\\.(clock|date|difftime|execute|exit|getenv|remove|rename|setlocale|time|tmpname)|package\\.(cpath|loaded|loadlib|path|preload|seeall)|debug\\.(debug|[gs]etfenv|[gs]ethook|getinfo|[gs]etlocal|[gs]etmetatable|getregistry|[gs]etupvalue|traceback)|class)\\b(?=[( {])",
             "beginCaptures": {
                 "1": {
                     "name": "support.function.lua"
+                }
+            },
+            "end": "\\)",
+            "patterns": [
+                {
+                    "include": "#general"
+                }
+            ]
+        },
+        "gamefunctioncall": {
+            "name": "meta.gamefunctioncall.lua",
+            "begin": "(?<![^.]\\.|:)\\b(ccwarning|(game|md|cfg|ui|mp|sm|pm|luaj|luaoc|luacs)[\\.:](\\w+(\\w|\\d)*))\\b(?=[( {])",
+            "beginCaptures": {
+                "1": {
+                    "name": "support.type.lua"
                 }
             },
             "end": "\\)",
@@ -318,6 +339,191 @@
         "variable": {
             "name": "variable.other.lua",
             "match": "([A-Za-z_][A-Za-z0-9_\\.]*)"
+        },
+        "template": {
+            "name": "meta.template.lua",
+            "begin": "\\b(template)\\b\\(",
+            "beginCaptures": {
+                "1": {
+                    "name": "support.type.lua"
+                }
+            },
+            "end": "\\)",
+            "patterns": [
+                {
+                    "include": "#singlequotetemplate"
+                },
+                {
+                    "include": "#doublequotetemplate"
+                },
+                {
+                    "include": "#multilinetemplate"
+                }
+            ]
+        },
+        "singlequotetemplate": {
+            "name": "template.quoted.single.lua",
+            "begin": "'",
+            "beginCaptures": {
+                "0": {
+                    "name": "punctuation.definition.string.begin.lua"
+                }
+            },
+            "end": "'",
+            "endCaptures": {
+                "0": {
+                    "name": "punctuation.definition.string.end.lua"
+                }
+            },
+            "patterns": [
+                {
+                    "include": "#templatecontent"
+                }
+            ]
+        },
+        "doublequotetemplate": {
+            "name": "template.quoted.double.lua",
+            "begin": "\"",
+            "beginCaptures": {
+                "0": {
+                    "name": "punctuation.definition.string.begin.lua"
+                }
+            },
+            "end": "\"",
+            "endCaptures": {
+                "0": {
+                    "name": "punctuation.definition.string.end.lua"
+                }
+            },
+            "patterns": [
+                {
+                    "include": "#templatecontent"
+                }
+            ]
+        },
+        "multilinetemplate": {
+            "name": "template.quoted.block.lua",
+            "begin": "\\[(=*)\\[",
+            "beginCaptures": {
+                "0": {
+                    "name": "punctuation.definition.string.begin.lua"
+                }
+            },
+            "end": "\\]\\1\\]",
+            "endCaptures": {
+                "0": {
+                    "name": "punctuation.definition.string.end.lua"
+                }
+            },
+            "patterns": [
+                {
+                    "include": "#templatecontent"
+                }
+            ]
+        },
+        "templatecontent": {
+            "name": "meta.templatecontent.lua",
+            "patterns": [
+                {
+                    "include": "#templatehtml"
+                },
+                {
+                    "include": "#templatecode"
+                }
+            ]
+        },
+        "templatehtml": {
+            "name": "meta.templatehtml.lua",
+            "begin": "<(\\w+)(\\s*(\\w+)=('|\"|\\w|\\d|_)*)*>",
+            "beginCaptures": {
+                "0": {
+                    "name": "support.constant.lua"
+                }
+            },
+            "end": "<\/(\\w+)>",
+            "endCaptures": {
+                "0": {
+                    "name": "support.constant.lua"
+                }
+            },
+            "patterns": [
+                {
+                    "include": "#templatecode"
+                },
+                {
+                    "include": "#templatehtml"
+                },
+                {
+                    "match": "[^<>]*",
+                    "captures": {
+                        "0": {
+                            "name": "string.quoted.single.lua"
+                        }
+                    }
+                }
+            ]
+        },
+        "templatecode": {
+            "name": "meta.templatecode.lua",
+            "begin": "<%=?",
+            "beginCaptures": {
+                "0": {
+                    "name": "support.type.lua"
+                }
+            },
+            "end": "%>",
+            "endCaptures": {
+                "0": {
+                    "name": "support.type.lua"
+                }
+            },
+            "patterns": [
+                {
+                    "include": "#blockcomment"
+                },
+                {
+                    "include": "#number"
+                },
+                {
+                    "include": "#constant"
+                },
+                {
+                    "include": "#singlequotestring"
+                },
+                {
+                    "include": "#doublequotestring"
+                },
+                {
+                    "include": "#multilinestring"
+                },
+                {
+                    "include": "#function"
+                },
+                {
+                    "include": "#libfunctioncall"
+                },
+                {
+                    "include": "#gamefunctioncall"
+                },
+                {
+                    "include": "#functioncall"
+                },
+                {
+                    "include": "#tabledecl"
+                },
+                {
+                    "include": "#arrayindex"
+                },
+                {
+                    "include": "#operator"
+                },
+                {
+                    "include": "#keyword"
+                },
+                {
+                    "include": "#variable"
+                }
+            ]
         }
     },
     "patterns": [

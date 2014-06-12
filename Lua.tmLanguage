@@ -99,6 +99,38 @@
 				</dict>
 			</array>
 		</dict>
+		<key>doublequotetemplate</key>
+		<dict>
+			<key>begin</key>
+			<string>"</string>
+			<key>beginCaptures</key>
+			<dict>
+				<key>0</key>
+				<dict>
+					<key>name</key>
+					<string>punctuation.definition.string.begin.lua</string>
+				</dict>
+			</dict>
+			<key>end</key>
+			<string>"</string>
+			<key>endCaptures</key>
+			<dict>
+				<key>0</key>
+				<dict>
+					<key>name</key>
+					<string>punctuation.definition.string.end.lua</string>
+				</dict>
+			</dict>
+			<key>name</key>
+			<string>template.quoted.double.lua</string>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>include</key>
+					<string>#templatecontent</string>
+				</dict>
+			</array>
+		</dict>
 		<key>forblock</key>
 		<dict>
 			<key>begin</key>
@@ -189,6 +221,30 @@
 				</dict>
 			</array>
 		</dict>
+		<key>gamefunctioncall</key>
+		<dict>
+			<key>begin</key>
+			<string>(?&lt;![^.]\.|:)\b(ccwarning|(game|md|cfg|ui|mp|sm|pm|luaj|luaoc|luacs)[\.:](\w+(\w|\d)*))\b(?=[( {])</string>
+			<key>beginCaptures</key>
+			<dict>
+				<key>1</key>
+				<dict>
+					<key>name</key>
+					<string>support.type.lua</string>
+				</dict>
+			</dict>
+			<key>end</key>
+			<string>\)</string>
+			<key>name</key>
+			<string>meta.gamefunctioncall.lua</string>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>include</key>
+					<string>#general</string>
+				</dict>
+			</array>
+		</dict>
 		<key>general</key>
 		<dict>
 			<key>patterns</key>
@@ -211,6 +267,10 @@
 				</dict>
 				<dict>
 					<key>include</key>
+					<string>#template</string>
+				</dict>
+				<dict>
+					<key>include</key>
 					<string>#singlequotestring</string>
 				</dict>
 				<dict>
@@ -227,11 +287,15 @@
 				</dict>
 				<dict>
 					<key>include</key>
-					<string>#functioncall</string>
+					<string>#libfunctioncall</string>
 				</dict>
 				<dict>
 					<key>include</key>
-					<string>#if</string>
+					<string>#gamefunctioncall</string>
+				</dict>
+				<dict>
+					<key>include</key>
+					<string>#functioncall</string>
 				</dict>
 				<dict>
 					<key>include</key>
@@ -312,6 +376,8 @@
 		</dict>
 		<key>libfunctioncall</key>
 		<dict>
+			<key>begin</key>
+			<string>(?&lt;![^.]\.|:)\b(assert|collectgarbage|dofile|error|getfenv|getmetatable|ipairs|loadfile|loadstring|module|next|pairs|pcall|print|rawequal|rawget|rawset|require|select|setfenv|setmetatable|tonumber|tostring|type|unpack|xpcall|coroutine\.(create|resume|running|status|wrap|yield)|string\.(byte|char|dump|find|gfind|format|gmatch|gsub|len|lower|match|rep|reverse|sub|upper)|table\.(concat|insert|maxn|remove|sort)|math\.(abs|acos|asin|atan2?|ceil|cosh?|deg|exp|floor|fmod|frexp|ldexp|log|log10|max|min|modf|pow|rad|random|randomseed|sinh?|sqrt|tanh?)|io\.(close|flush|input|lines|open|output|popen|read|tmpfile|type|write)|os\.(clock|date|difftime|execute|exit|getenv|remove|rename|setlocale|time|tmpname)|package\.(cpath|loaded|loadlib|path|preload|seeall)|debug\.(debug|[gs]etfenv|[gs]ethook|getinfo|[gs]etlocal|[gs]etmetatable|getregistry|[gs]etupvalue|traceback)|class)\b(?=[( {])</string>
 			<key>beginCaptures</key>
 			<dict>
 				<key>1</key>
@@ -322,10 +388,8 @@
 			</dict>
 			<key>end</key>
 			<string>\)</string>
-			<key>match</key>
-			<string>(?&lt;![^.]\.|:)\b(assert|collectgarbage|dofile|error|getfenv|getmetatable|ipairs|loadfile|loadstring|module|next|pairs|pcall|print|rawequal|rawget|rawset|require|select|setfenv|setmetatable|tonumber|tostring|type|unpack|xpcall|coroutine\.(create|resume|running|status|wrap|yield)|string\.(byte|char|dump|find|format|gmatch|gsub|len|lower|match|rep|reverse|sub|upper)|table\.(concat|insert|maxn|remove|sort)|math\.(abs|acos|asin|atan2?|ceil|cosh?|deg|exp|floor|fmod|frexp|ldexp|log|log10|max|min|modf|pow|rad|random|randomseed|sinh?|sqrt|tanh?)|io\.(close|flush|input|lines|open|output|popen|read|tmpfile|type|write)|os\.(clock|date|difftime|execute|exit|getenv|remove|rename|setlocale|time|tmpname)|package\.(cpath|loaded|loadlib|path|preload|seeall)|debug\.(debug|[gs]etfenv|[gs]ethook|getinfo|[gs]etlocal|[gs]etmetatable|getregistry|[gs]etupvalue|traceback))\b(?=[( {])</string>
 			<key>name</key>
-			<string>meta.functioncall.lua</string>
+			<string>meta.libfunctioncall.lua</string>
 			<key>patterns</key>
 			<array>
 				<dict>
@@ -374,6 +438,38 @@
 			</dict>
 			<key>name</key>
 			<string>string.quoted.block.lua</string>
+		</dict>
+		<key>multilinetemplate</key>
+		<dict>
+			<key>begin</key>
+			<string>\[(=*)\[</string>
+			<key>beginCaptures</key>
+			<dict>
+				<key>0</key>
+				<dict>
+					<key>name</key>
+					<string>punctuation.definition.string.begin.lua</string>
+				</dict>
+			</dict>
+			<key>end</key>
+			<string>\]\1\]</string>
+			<key>endCaptures</key>
+			<dict>
+				<key>0</key>
+				<dict>
+					<key>name</key>
+					<string>punctuation.definition.string.end.lua</string>
+				</dict>
+			</dict>
+			<key>name</key>
+			<string>template.quoted.block.lua</string>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>include</key>
+					<string>#templatecontent</string>
+				</dict>
+			</array>
 		</dict>
 		<key>number</key>
 		<dict>
@@ -455,6 +551,38 @@
 				</dict>
 			</array>
 		</dict>
+		<key>singlequotetemplate</key>
+		<dict>
+			<key>begin</key>
+			<string>'</string>
+			<key>beginCaptures</key>
+			<dict>
+				<key>0</key>
+				<dict>
+					<key>name</key>
+					<string>punctuation.definition.string.begin.lua</string>
+				</dict>
+			</dict>
+			<key>end</key>
+			<string>'</string>
+			<key>endCaptures</key>
+			<dict>
+				<key>0</key>
+				<dict>
+					<key>name</key>
+					<string>punctuation.definition.string.end.lua</string>
+				</dict>
+			</dict>
+			<key>name</key>
+			<string>template.quoted.single.lua</string>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>include</key>
+					<string>#templatecontent</string>
+				</dict>
+			</array>
+		</dict>
 		<key>tabledecl</key>
 		<dict>
 			<key>begin</key>
@@ -468,6 +596,190 @@
 				<dict>
 					<key>include</key>
 					<string>#general</string>
+				</dict>
+			</array>
+		</dict>
+		<key>template</key>
+		<dict>
+			<key>begin</key>
+			<string>\b(template)\b\(</string>
+			<key>beginCaptures</key>
+			<dict>
+				<key>1</key>
+				<dict>
+					<key>name</key>
+					<string>support.type.lua</string>
+				</dict>
+			</dict>
+			<key>end</key>
+			<string>\)</string>
+			<key>name</key>
+			<string>meta.template.lua</string>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>include</key>
+					<string>#singlequotetemplate</string>
+				</dict>
+				<dict>
+					<key>include</key>
+					<string>#doublequotetemplate</string>
+				</dict>
+				<dict>
+					<key>include</key>
+					<string>#multilinetemplate</string>
+				</dict>
+			</array>
+		</dict>
+		<key>templatecode</key>
+		<dict>
+			<key>begin</key>
+			<string>&lt;%=?</string>
+			<key>beginCaptures</key>
+			<dict>
+				<key>0</key>
+				<dict>
+					<key>name</key>
+					<string>support.type.lua</string>
+				</dict>
+			</dict>
+			<key>end</key>
+			<string>%&gt;</string>
+			<key>endCaptures</key>
+			<dict>
+				<key>0</key>
+				<dict>
+					<key>name</key>
+					<string>support.type.lua</string>
+				</dict>
+			</dict>
+			<key>name</key>
+			<string>meta.templatecode.lua</string>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>include</key>
+					<string>#blockcomment</string>
+				</dict>
+				<dict>
+					<key>include</key>
+					<string>#number</string>
+				</dict>
+				<dict>
+					<key>include</key>
+					<string>#constant</string>
+				</dict>
+				<dict>
+					<key>include</key>
+					<string>#singlequotestring</string>
+				</dict>
+				<dict>
+					<key>include</key>
+					<string>#doublequotestring</string>
+				</dict>
+				<dict>
+					<key>include</key>
+					<string>#multilinestring</string>
+				</dict>
+				<dict>
+					<key>include</key>
+					<string>#function</string>
+				</dict>
+				<dict>
+					<key>include</key>
+					<string>#libfunctioncall</string>
+				</dict>
+				<dict>
+					<key>include</key>
+					<string>#gamefunctioncall</string>
+				</dict>
+				<dict>
+					<key>include</key>
+					<string>#functioncall</string>
+				</dict>
+				<dict>
+					<key>include</key>
+					<string>#tabledecl</string>
+				</dict>
+				<dict>
+					<key>include</key>
+					<string>#arrayindex</string>
+				</dict>
+				<dict>
+					<key>include</key>
+					<string>#operator</string>
+				</dict>
+				<dict>
+					<key>include</key>
+					<string>#keyword</string>
+				</dict>
+				<dict>
+					<key>include</key>
+					<string>#variable</string>
+				</dict>
+			</array>
+		</dict>
+		<key>templatecontent</key>
+		<dict>
+			<key>name</key>
+			<string>meta.templatecontent.lua</string>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>include</key>
+					<string>#templatehtml</string>
+				</dict>
+				<dict>
+					<key>include</key>
+					<string>#templatecode</string>
+				</dict>
+			</array>
+		</dict>
+		<key>templatehtml</key>
+		<dict>
+			<key>begin</key>
+			<string>&lt;(\w+)(\s*(\w+)=('|"|\w|\d|_)*)*&gt;</string>
+			<key>beginCaptures</key>
+			<dict>
+				<key>0</key>
+				<dict>
+					<key>name</key>
+					<string>support.constant.lua</string>
+				</dict>
+			</dict>
+			<key>end</key>
+			<string>&lt;/(\w+)&gt;</string>
+			<key>endCaptures</key>
+			<dict>
+				<key>0</key>
+				<dict>
+					<key>name</key>
+					<string>support.constant.lua</string>
+				</dict>
+			</dict>
+			<key>name</key>
+			<string>meta.templatehtml.lua</string>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>include</key>
+					<string>#templatecode</string>
+				</dict>
+				<dict>
+					<key>include</key>
+					<string>#templatehtml</string>
+				</dict>
+				<dict>
+					<key>captures</key>
+					<dict>
+						<key>0</key>
+						<dict>
+							<key>name</key>
+							<string>string.quoted.single.lua</string>
+						</dict>
+					</dict>
+					<key>match</key>
+					<string>[^&lt;&gt;]*</string>
 				</dict>
 			</array>
 		</dict>
