@@ -52,3 +52,15 @@ This is a small plugin that continually parses the current lua file and highligh
 Lua appears to stop at the first error, so you should only ever see one dot. The error message will be shown in the status bar.
 
 ![Status Bar](http://github.com/rorydriscoll/LuaSublime/raw/master/StatusBar.png)
+
+### 游戏改动相关
+
+`install.sh`
+
+覆盖安装到Sublime的Lua目录
+
+特性:
+
+- 语法高亮常用游戏函数和对象如ccwarning, md, ui等
+- 加入slt2模版语法高亮(参看TestSceneTemplates.lua)
+
