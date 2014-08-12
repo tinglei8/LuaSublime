@@ -32,35 +32,35 @@
                     "include": "#multilinestring"
                 },
                 {
-                    "include": "#function"
-                },
-                {
                     "include": "#libfunctioncall"
                 },
                 {
                     "include": "#gamefunctioncall"
                 },
-                {
-                    "include": "#functioncall"
-                },
-                {
-                    "include": "#ifblock"
-                },
-                {
-                    "include": "#forblock"
-                },
-                {
-                    "include": "#whileblock"
-                },
-                {
-                    "include": "#repeatblock"
-                },
-                {
-                    "include": "#tabledecl"
-                },
-                {
-                    "include": "#arrayindex"
-                },
+                // {
+                //     "include": "#functioncall"
+                // },
+                // {
+                //     "include": "#function"
+                // },
+                // {
+                //     "include": "#ifblock"
+                // },
+                // {
+                //     "include": "#forblock"
+                // },
+                // {
+                //     "include": "#whileblock"
+                // },
+                // {
+                //     "include": "#repeatblock"
+                // },
+                // {
+                //     "include": "#tabledecl"
+                // },
+                // {
+                //     "include": "#arrayindex"
+                // },
                 {
                     "include": "#operator"
                 },
@@ -161,6 +161,46 @@
                 }
             }
         },
+        "libfunctioncall": {
+            "name": "meta.libfunctioncall.lua",
+            "begin": "(?<![^.]\\.|:)\\b(assert|collectgarbage|dofile|error|getfenv|getmetatable|ipairs|loadfile|loadstring|module|next|pairs|pcall|print|rawequal|rawget|rawset|require|select|setfenv|setmetatable|tonumber|tostring|type|unpack|xpcall|coroutine\\.(create|resume|running|status|wrap|yield)|string\\.(byte|char|dump|find|gfind|format|gmatch|gsub|len|lower|match|rep|reverse|sub|upper)|table\\.(concat|insert|maxn|remove|sort|merge)|math\\.(abs|acos|asin|atan2?|ceil|cosh?|deg|exp|floor|fmod|frexp|ldexp|log|log10|max|min|modf|pow|rad|random|randomseed|sinh?|sqrt|tanh?)|io\\.(close|flush|input|lines|open|output|popen|read|tmpfile|type|write)|os\\.(clock|date|difftime|execute|exit|getenv|remove|rename|setlocale|time|tmpname)|package\\.(cpath|loaded|loadlib|path|preload|seeall)|debug\\.(debug|[gs]etfenv|[gs]ethook|getinfo|[gs]etlocal|[gs]etmetatable|getregistry|[gs]etupvalue|traceback)|class)\\b(?=[( {])",
+            "beginCaptures": {
+                "1": {
+                    "name": "support.function.lua"
+                }
+            },
+            "end": "\\)",
+            "patterns": [
+                {
+                    "include": "#general"
+                }
+            ]
+        },
+        "gamefunctioncall": {
+            "name": "meta.gamefunctioncall.lua",
+            "begin": "(?<![^.]\\.|:)\\b(ccwarning|ccwarn|ModalView|View|(game|md|cfg|ui|mp|sm|pm|luaj|luaoc|luacs)[\\.:](\\w+(\\w|\\d)*))\\b(?=[( {])",
+            "beginCaptures": {
+                "1": {
+                    "name": "support.type.lua"
+                }
+            },
+            "end": "\\)",
+            "patterns": [
+                {
+                    "include": "#general"
+                }
+            ]
+        },
+        "functioncall": {
+            "name": "meta.functioncall.lua",
+            "begin": "((\\w(\\w|\\d)*[\\.:])*\\w(\\w|\\d)*)\\(",
+            "end": "\\)",
+            "patterns": [
+                {
+                    "include": "#general"
+                }
+            ]
+        },
         "function": {
             "name": "meta.function.lua",
             "begin": "\\b(function)(\\s+(((\\w(\\w|\\d)*)(\\.|:))*(\\w(\\w|\\d)*)))?\\s*(\\()\\s*((\\.\\.\\.|\\w(\\w|\\d)*)(,\\s*(\\.\\.\\.|\\w(\\w|\\d)*))*)?\\s*(\\))",
@@ -181,46 +221,6 @@
                     "name": "keyword.control.lua"
                 }
             },
-            "patterns": [
-                {
-                    "include": "#general"
-                }
-            ]
-        },
-        "libfunctioncall": {
-            "name": "meta.libfunctioncall.lua",
-            "begin": "(?<![^.]\\.|:)\\b(assert|collectgarbage|dofile|error|getfenv|getmetatable|ipairs|loadfile|loadstring|module|next|pairs|pcall|print|rawequal|rawget|rawset|require|select|setfenv|setmetatable|tonumber|tostring|type|unpack|xpcall|coroutine\\.(create|resume|running|status|wrap|yield)|string\\.(byte|char|dump|find|gfind|format|gmatch|gsub|len|lower|match|rep|reverse|sub|upper)|table\\.(concat|insert|maxn|remove|sort|merge)|math\\.(abs|acos|asin|atan2?|ceil|cosh?|deg|exp|floor|fmod|frexp|ldexp|log|log10|max|min|modf|pow|rad|random|randomseed|sinh?|sqrt|tanh?)|io\\.(close|flush|input|lines|open|output|popen|read|tmpfile|type|write)|os\\.(clock|date|difftime|execute|exit|getenv|remove|rename|setlocale|time|tmpname)|package\\.(cpath|loaded|loadlib|path|preload|seeall)|debug\\.(debug|[gs]etfenv|[gs]ethook|getinfo|[gs]etlocal|[gs]etmetatable|getregistry|[gs]etupvalue|traceback)|class)\\b(?=[( {])",
-            "beginCaptures": {
-                "1": {
-                    "name": "support.function.lua"
-                }
-            },
-            "end": "\\)",
-            "patterns": [
-                {
-                    "include": "#general"
-                }
-            ]
-        },
-        "gamefunctioncall": {
-            "name": "meta.gamefunctioncall.lua",
-            "begin": "(?<![^.]\\.|:)\\b(ccwarning|(game|md|cfg|ui|mp|sm|pm|luaj|luaoc|luacs)[\\.:](\\w+(\\w|\\d)*))\\b(?=[( {])",
-            "beginCaptures": {
-                "1": {
-                    "name": "support.type.lua"
-                }
-            },
-            "end": "\\)",
-            "patterns": [
-                {
-                    "include": "#general"
-                }
-            ]
-        },
-        "functioncall": {
-            "name": "meta.functioncall.lua",
-            "begin": "((\\w(\\w|\\d)*[\\.:])*\\w(\\w|\\d)*)\\(",
-            "end": "\\)",
             "patterns": [
                 {
                     "include": "#general"

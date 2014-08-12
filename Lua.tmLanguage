@@ -224,7 +224,7 @@
 		<key>gamefunctioncall</key>
 		<dict>
 			<key>begin</key>
-			<string>(?&lt;![^.]\.|:)\b(ccwarning|(game|md|cfg|ui|mp|sm|pm|luaj|luaoc|luacs)[\.:](\w+(\w|\d)*))\b(?=[( {])</string>
+			<string>(?&lt;![^.]\.|:)\b(ccwarning|ccwarn|ModalView|View|(game|md|cfg|ui|mp|sm|pm|luaj|luaoc|luacs)[\.:](\w+(\w|\d)*))\b(?=[( {])</string>
 			<key>beginCaptures</key>
 			<dict>
 				<key>1</key>
@@ -283,43 +283,11 @@
 				</dict>
 				<dict>
 					<key>include</key>
-					<string>#function</string>
-				</dict>
-				<dict>
-					<key>include</key>
 					<string>#libfunctioncall</string>
 				</dict>
 				<dict>
 					<key>include</key>
 					<string>#gamefunctioncall</string>
-				</dict>
-				<dict>
-					<key>include</key>
-					<string>#functioncall</string>
-				</dict>
-				<dict>
-					<key>include</key>
-					<string>#ifblock</string>
-				</dict>
-				<dict>
-					<key>include</key>
-					<string>#forblock</string>
-				</dict>
-				<dict>
-					<key>include</key>
-					<string>#whileblock</string>
-				</dict>
-				<dict>
-					<key>include</key>
-					<string>#repeatblock</string>
-				</dict>
-				<dict>
-					<key>include</key>
-					<string>#tabledecl</string>
-				</dict>
-				<dict>
-					<key>include</key>
-					<string>#arrayindex</string>
 				</dict>
 				<dict>
 					<key>include</key>
